@@ -1,7 +1,6 @@
-// Service Worker de Bolígrafo — estrategia "cache-first" para el shell.
-// ¿Por qué? Tus TEXTOS viven en IndexedDB (siempre offline).
-// El SW solo cachea la app (HTML/JS/CSS/fuentes) para que abra sin internet.
-const CACHE = 'boligrafo-v1';
+// v2: SOLO cachea el shell de la app (mismo origen) y SOLO respuestas
+// exitosas. Las llamadas a la API de sync nunca se tocan.
+const CACHE = 'boligrafo-v2';   // ← bump: purga el caché envenenado
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(['./'])));
@@ -18,17 +17,22 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
-  if (e.request.method !== 'GET') return;
+  const url = new URL(e.request.url);
+  // Regla nueva: si no es GET o no es NUESTRO origen (la API de
+  // sync vive en workers.dev), el SW no interviene en absoluto.
+  if (e.request.method !== 'GET' || url.origin !== self.location.origin) return;
+
   e.respondWith(
     caches.match(e.request).then(
       (hit) =>
         hit ||
         fetch(e.request).then((res) => {
-          // cachea al vuelo lo que se descarga (JS, CSS, fuentes)
-          const copy = res.clone();
-          caches.open(CACHE).then((c) => c.put(e.request, copy));
+          if (res.ok) {               // ← nunca cachear errores
+            const copy = res.clone();
+            caches.open(CACHE).then((c) => c.put(e.request, copy));
+          }
           return res;
-        }).catch(() => hit)
+        })
     )
   );
 });
