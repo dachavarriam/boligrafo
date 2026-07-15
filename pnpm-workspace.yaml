@@ -1,0 +1,4 @@
+# pnpm 11: aprobación explícita de scripts postinstall
+# (protección supply-chain). esbuild lo necesita para Vite.
+allowBuilds:
+  esbuild: true

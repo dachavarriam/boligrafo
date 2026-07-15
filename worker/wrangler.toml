@@ -1,0 +1,8 @@
+name = "boligrafo-sync"
+main = "index.js"
+compatibility_date = "2026-07-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "boligrafo"
+database_id = "35cab67a-6422-4af0-afa1-78d5f16020ef"

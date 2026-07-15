@@ -1,0 +1,33 @@
+{
+  "name": "boligrafo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Estudio de escritura local-first para novelas y worldbuilding",
+  "type": "module",
+  "packageManager": "pnpm@11.13.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tiptap/core": "^2.14.0",
+    "@tiptap/extension-image": "^2.14.0",
+    "@tiptap/extension-placeholder": "^2.14.0",
+    "@tiptap/extension-table": "^2.14.0",
+    "@tiptap/extension-table-cell": "^2.14.0",
+    "@tiptap/extension-table-header": "^2.14.0",
+    "@tiptap/extension-table-row": "^2.14.0",
+    "@tiptap/pm": "^2.27.2",
+    "@tiptap/starter-kit": "^2.14.0",
+    "dexie": "^4.0.11"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  }
+}
